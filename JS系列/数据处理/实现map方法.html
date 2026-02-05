@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现map方法</title>
+</head>
+
+<body>
+    <script>
+        Array.prototype._map = function (fn) {
+            if (typeof fn !== 'function') {
+                throw Error('参数必须是一个函数！');
+            }
+
+            const res = [];
+            for (let i = 0, len = this.length; i < len; i++) {
+                res.push(fn(this[i]));
+            }
+            return res;
+        }
+    </script>
+</body>
+
+</html>
