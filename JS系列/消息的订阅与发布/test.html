@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+    <script type="module">
+        import EventEmitter from './index.js';
+
+        const bus = new EventEmitter();
+
+        //1.------测试on和emit------
+        function handler1(name) {
+            console.log(`用户${name}登录了（Handler1）`);
+        }
+
+        function handler2(name) {
+            console.log(`记录日志：${name}（Handler2）`);
+        }
+
+        //订阅login事件
+        bus.on('login', handler1);
+        bus.on('login', handler2);
+
+        //触发login事件
+        console.log('------第一次触发login------');
+        bus.emit('login', '张三');
+        /*输出：
+        用户张三登录了（Handler1）
+        记录日志：张三（Handler2）
+         */
+
+        // --- 2. 测试 off (取消订阅) ---
+        bus.off('login', handler1); // 移除了 handler1
+
+        console.log('------第二次触发 login (移除后)------');
+        bus.emit('login', 'Steve');
+        /* 输出:
+        记录日志: Steve (Handler 2)
+        (注意：handler1 没有执行)
+        */
+
+        // --- 3. 测试 once (只执行一次) ---
+        bus.once('pay', (money) => {
+            console.log(`支付了 ${money} 元`);
+        });
+
+        console.log('--- 触发 pay ---');
+        bus.emit('pay', 100); // 输出: 支付了 100 元
+        bus.emit('pay', 200); // 无输出 (因为它已经自动解绑了)
+
+    </script>
+</body>
+
+</html>
