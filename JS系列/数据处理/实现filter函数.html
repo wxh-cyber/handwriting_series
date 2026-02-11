@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现filter函数</title>
+</head>
+
+<body>
+    <script>
+        Array.prototype._filter = function (fn) {
+            if (typeof fn !== 'function') {
+                throw Error('参数必须是一个函数！');
+            }
+
+            const res = [];
+            for (let i = 0, len = this.length; i < len; i++) {
+                fn(this[i]) && res.push(this[i]);
+            }
+            return res;
+        }
+
+        function compare(num) {
+            if (num > 10) return true;
+            else return false;
+        }
+
+        let arr = [10, 13, 15, 9, 22, 40, 3, 7];
+        console.log(arr._filter(compare));
+    </script>
+</body>
+
+</html>

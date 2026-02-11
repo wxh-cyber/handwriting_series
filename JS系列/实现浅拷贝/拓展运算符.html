@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拓展运算符</title>
+</head>
+
+<body>
+    <!--拓展运算符对一维对象实现深拷贝，高维对象实现浅拷贝。-->
+    <script>
+        let obj1 = { a: 1, b: { c: 1 } };
+        let obj2 = { ...obj1 };
+        console.log(obj1);    //{a:1,b:{c:1}}
+        console.log(obj2);    //{a:1,b:{c:1}}
+        obj1.a = 2;
+        console.log(obj1);    //{a:2,b:{c:1}}
+        console.log(obj2);    //{a:1,b:{c:1}}
+        //对一维对象实现深拷贝
+
+        obj1.b.c = 6;
+        obj2.b.c = 7;
+        console.log(obj1);    //{a:2,b:{c:7}}
+        console.log(obj2);    //{a:1,b:{c:7}}
+        //对高维对象实现浅拷贝
+    </script>
+</body>
+
+</html>

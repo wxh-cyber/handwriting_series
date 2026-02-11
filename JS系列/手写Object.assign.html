@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写Object.assign</title>
+</head>
+
+<body>
+    <script>
+        Object.myAssign = function (target, ...source) {
+            if (target == null) {
+                throw new TypeError('Cannot convert undefined or null to object');
+            }
+
+            let ret = Object(target);
+            source.forEach(function (obj) {
+                if (obj != null) {
+                    for (let key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            ret[key] = obj[key];
+                        }
+                    }
+                }
+            });
+            return ret;
+        }
+
+        let obj1 = { a: 1 };
+        let obj2 = { b: 2, c: { d: 3 } };
+        let obj3 = { x: 66, y: 77 };
+        const result = Object.myAssign(obj1, obj2, obj3);
+        console.log(result);
+        /*{
+           a:1,
+           b:2,
+           c:{d:3},
+           x:66,
+           y:77
+        }
+        */
+    </script>
+</body>
+
+</html>

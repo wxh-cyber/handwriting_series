@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用replacer</title>
+</head>
+
+<body>
+    <!--当replacer参数是一个函数时，它会在每个属性被序列化之前调用，类似于数组方法中的map和filter。-->
+    <script>
+        const data = {
+            a: 'aaa',
+            b: undefined,
+            c: Symbol('dd'),
+            fn: function () {
+                return true;
+            }
+        };
+
+        //不使用replacer参数
+        console.log(JSON.stringify(data));
+
+        //使用replacer作为参数
+        console.log(JSON.stringify(data, (key, value) => {
+            switch (true) {
+                case typeof value === "undefined":
+                    return "undefined";
+                case typeof value === "symbol":
+                    return value.toString();
+                case typeof value === "function":
+                    return value.toString();
+                default:
+                    break;
+            }
+            return value;
+        }));
+        /**replacer函数将undefined、Symbol对象和函数转换为字符串，使它们能够被序列化。*/
+    </script>
+</body>
+
+</html>

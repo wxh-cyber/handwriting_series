@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写Object.create</title>
+</head>
+
+<body>
+    <!--
+        在JS中，所有函数都具有prototype属性，它是一个对象。当使用new关键字创建一个函数的新实例时，该实例会继承prototype对象的属性和方法（可类比于其他函数中的protected关键字）。
+    -->
+    <script>
+        function create(obj) {
+            function F() { };
+            F.prototype = obj;
+            return new F();
+        }
+    </script>
+</body>
+
+</html>

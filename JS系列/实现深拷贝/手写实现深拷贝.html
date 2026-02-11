@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写实现深拷贝</title>
+</head>
+
+<body>
+    <script>
+        //深拷贝的实现
+        function deepCopy(obj) {
+            if (!obj || typeof obj !== 'object') return;
+
+            let newObj = Array.isArray(obj) ? [] : {};
+
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    newObj[key] = typeof obj[key] === "object" ? deepCopy(obj[key]) : obj[key];
+                }
+            }
+            return newObj;
+        }
+
+        let obj1 = { a: 1, b: { c: 2 } };
+        let obj2 = deepCopy(obj1);
+        obj1.b.c = 5;
+        console.log(obj1);   //{a:1,b:{c:5}}
+        console.log(obj2);   //{a:1,b:{c:2}}
+    </script>
+</body>
+
+</html>

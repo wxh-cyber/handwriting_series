@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现repeat方法</title>
+</head>
+
+<body>
+    <script>
+        function repeat(s, n) {
+            return (new Array(n + 1)).join(s);
+        }
+
+        let str = 'abc';
+        console.log(repeat(str, 3));
+    </script>
+</body>
+
+</html>

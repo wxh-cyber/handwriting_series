@@ -1,0 +1,87 @@
+.container {
+    position: relative;
+    margin: 50px auto;
+    width: 800px;
+    height: 400px;
+    overflow: hidden;
+}
+
+.container .wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.container .wrapper .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    opacity: 0;
+    transition: all .3s;
+}
+
+/*默认显示第一张图片*/
+.container .wrapper .slider:nth-child(1) {
+    opacity: 1;
+    z-index: 1;
+}
+
+.container .wrapper .slider img {
+    width: 100%;
+    height: 100%;
+}
+
+/*分页器*/
+.pagination {
+    position: absolute;
+    z-index: 999;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    font-size: 0;
+    border-radius: 26px;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+}
+
+.pagination li.active {
+    background: red;
+}
+
+/*左右按钮*/
+.arrow {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    top: 50%;
+    margin-top: -22.5px;
+    width: 30px;
+    height: 45px;
+    background: url(./images/arrow.png) no-repeat 0 0;
+}
+
+.arrow .changeLeft {
+    left: 0;
+}
+
+.arrow .changeRight {
+    right: 0;
+    background-position: -50px 0;
+}
+
+.container:hover .arrow {
+    display: block;
+}

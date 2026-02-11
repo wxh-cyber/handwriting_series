@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大小为父元素宽度一半的正方形</title>
+    <style>
+        .outer {
+            width: 400px;
+            height: 600px;
+            background-color: red;
+        }
+
+        .inner {
+            width: 50%;
+            padding-bottom: 50%;
+            background: blue;
+        }
+
+        /*该方式仅仅是针对于父子元素的width和height存在特定情况的一种解决方案，不具有一般性。*/
+    </style>
+</head>
+
+<body>
+    <!--
+       解释：
+         1.宽度（Width）：.inner的width设置为50%，这意味着它的宽度将是其父元素（.outer）宽度的50%，即200px。
+         2.底部内边距（Padding-bottom）：.inner的padding-bottom设置为50%，这里的50%是相对于.inner自身的width计算的，因此padding-bottom也是200px。
+    -->
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+
+</html>

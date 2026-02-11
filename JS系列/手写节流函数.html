@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写节流函数</title>
+</head>
+
+<body>
+    <script>
+        function throttle(fn, delay) {
+            let curTime = Date.now();   //记录当前时间
+
+            return function () {
+                let context = this,
+                    args = arguments,
+                    nowTime = Date.now();
+
+                //如果两次时间间隔超过了指定的时间，则执行函数
+                if (nowTime - curTime >= delay) {
+                    curTime = Date.now();
+                    return fn.apply(context, args);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

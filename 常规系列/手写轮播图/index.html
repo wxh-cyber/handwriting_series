@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写轮播图</title>
+    <!--引入CSS样式-->
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!--轮播图容器-->
+    <div class="container">
+        <!--wrapper存放轮播图所有图片-->
+        <div class="wrapper">
+            <!--slider每一个轮播图-->
+            <div class="slider">
+                <img src="images/图片1.jpg" alt="">
+            </div>
+            <div class="slider">
+                <img src="images/图片2.jpg" alt="">
+            </div>
+            <div class="slider">
+                <img src="images/图片3.jpg" alt="">
+            </div>
+        </div>
+
+        <!--pagination分页器-->
+        <ul class="pagination">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        <!--左右按钮-->
+        <a href="javascript:;" class="arrow changeLeft"></a>
+        <a href="javascript:;" class="arrow changeRight"></a>
+    </div>
+
+    <!--引入JS脚本-->
+    <script src="./index.js"></script>
+</body>
+
+</html>

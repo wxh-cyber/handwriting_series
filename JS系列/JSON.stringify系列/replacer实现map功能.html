@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>replacer实现map功能</title>
+</head>
+
+<body>
+    <script>
+        const data = {
+            a: 2,
+            b: 3,
+            c: 4,
+            d: 5
+        };
+
+        const objMap = (obj, fn) => {
+            if (typeof fn !== 'function') {
+                throw new TypeError(`${fn} is not a function!`);
+            }
+            return JSON.parse(JSON.stringify(obj, fn));
+        }
+
+        console.log(objMap(data, (key, value) => {
+            if (value % 2 == 0) {
+                return value / 2;
+            }
+            return value;
+        }));
+        /**
+         * {
+         *    a:1,
+         *    b:3,
+         *    c:2,
+         *    d:5
+         * }
+        */
+    </script>
+</body>
+
+</html>

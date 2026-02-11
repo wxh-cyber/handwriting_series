@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组元素求和</title>
+</head>
+
+<body>
+    <script>
+        //一维数组求和
+        let arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let sum1 = arr1.reduce((total, i) => total += i, 0);
+        console.log(sum1);   //55
+
+        //多维数组求和
+        function sumArrayElements(arr) {
+            let total = 0;
+            arr.forEach(Element => {
+                if (Array.isArray(Element)) {
+                    //如果元素是数组，递归调用该函数
+                    total += sumArrayElements(Element);
+                } else {
+                    //如果元素是数字，则加到总和中
+                    total += Number(Element);
+                }
+            });
+            return total;
+        }
+
+        let arr2 = [1, 2, 3, [[4, 5], 6], 7, 8, 9];
+        let sum2 = sumArrayElements(arr2);
+        console.log(sum2);   //45
+
+        //递归实现
+        let arr3 = [1, 2, 3, 4, 5];
+        function add(arr) {
+            if (arr.length == 1) return arr[0];
+            return arr[0] + add(arr.slice(1));
+        }
+        let sum3 = add(arr3);
+        console.log(sum3);    //15
+    </script>
+</body>
+
+</html>

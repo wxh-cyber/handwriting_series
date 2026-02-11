@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>处理map、set对象</title>
+</head>
+
+<body>
+    <script>
+        const map = new Map();
+        map.set('a', 1);
+        map.set('b', 2);
+        console.log(map);   //Map:{'a'=>1,'b'=>2}
+
+        const set = new Set();
+        set.add(1);
+        set.add(2);
+        console.log(set);   //set:{1,2}
+
+        console.log(JSON.stringify(map));   //{}
+        console.log(JSON.stringify(set));   //{}
+        //两次均输出了空对象，这说明Map和Set数据存储并不是作为对象属性而存在的
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现日期格式化</title>
+</head>
+
+<body>
+    <script>
+        const dateFormat = (dateInput, format) => {
+            var day = dateInput.getDate();
+            var month = dateInput.getMonth() + 1;
+            var year = dateInput.getFullYear();
+            format = format.replace(/yyyy/, year);
+            format = format.replace(/mm/, month);
+            format = format.replace(/dd/, day);
+            return format;
+        }
+    </script>
+</body>
+
+</html>

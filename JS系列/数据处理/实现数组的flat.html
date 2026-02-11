@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现数组的flat</title>
+</head>
+
+<body>
+    <script>
+        function _flat(arr, depth) {
+            //如果对象不是数组，或深度不符合要求
+            if (!Array.isArray(arr) || depth <= 0) {
+                return arr;
+            }
+            return arr.reduce((prev, cur) => {
+                if (Array.isArray(cur)) {
+                    return prev.concat(_flat(cur, depth - 1));
+                } else {
+                    return prev.concat(cur);
+                }
+            }, []);
+        }
+    </script>
+</body>
+
+</html>

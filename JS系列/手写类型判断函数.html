@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写类型判断函数</title>
+</head>
+
+<body>
+    <script>
+        let num1 = 6;
+        let arr = [1, 2, 3];
+        function fun() {
+            console.log('Hello');
+        }
+        console.log(typeof num1);     //number
+        console.log(typeof arr);      //object
+        console.log(Object.prototype.toString.call(arr));   //[object Array]
+
+        //手写类型判断函数
+        function getType(value) {
+            //判断数据为null的情况
+            if (value === null) {
+                return value;
+            }
+
+            //判断数据是引用类型的情况
+            if (typeof value === "object") {
+                let valueClass = Object.prototype.toString.call(value),
+                    //分析：由于调用toString方法后，会返回类似于[object Array]这样的类型，所以在对得到的结果进行处理时，首先调用split(' ')，获取到第二个字段中的内容，再通过split('')的方式将该字符串转化成字符数组。
+                    type = valueClass.split(' ')[1].split('');
+                //通过pop方式去除末尾的]
+                type.pop();
+                //合并字符数组，并将所有字符转换成小写形式
+                return type.join('').toLowerCase();
+            } else {
+                //判断数据是基本类型的情况
+                return typeof value;
+            }
+        }
+
+        console.log(getType(arr));
+        console.log(getType(fun));
+    </script>
+</body>
+
+</html>

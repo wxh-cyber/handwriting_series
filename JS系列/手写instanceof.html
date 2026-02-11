@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写实现instanceof</title>
+</head>
+
+<body>
+    <!--
+      instanceof方法：用于测试一个对象是否在其原型链原型构造函数的prototype属性所指向的原型对象上。用来检测一个实例是否属于某个构造函数或者它的原型链上的构造函数。
+
+      1.原始类型：instanceof 运算符不适用于原始类型（如 number、string、boolean、null、undefined、symbol），因为原始类型不是对象，也没有原型链。
+      2.跨文档或跨窗口的对象：如果两个页面（或两个 <iframe>）来自不同的源（协议、端口或主机名中的任何一个不同），则一个页面中的对象将不会被识别为另一个页面中的构造函数的实例，即使它们实际上是相同的构造函数创建的。
+      3.null 和 undefined：尝试对 null 或 undefined 使用 instanceof 运算符会抛出 TypeError，因为这两个值不是对象。
+      4.继承：如果构造函数 A 的原型（prototype）是另一个构造函数 B 的实例，那么 A 的实例也会被认为是 B 的实例。这允许 JavaScript 实现类似传统面向对象编程中的继承机制。
+      -->
+    <script>
+        function myInstanceof(left, right) {
+            let proto = Object.getPrototypeOf(left),  //获取left对象的原型
+                protoType = right.prototype;          //获取构造函数的prototype对象
+
+            //判断构造函数的prototype对象是否在对象的原型链上
+            while (true) {
+                if (!proto) return false;     //如果left不存在原型对象
+                if (proto == protoType) return true;    //如果在right的原型链上找到了left对象的原型
+
+                proto = Object.getPrototypeOf(proto);     //向上追溯
+            }
+        }
+
+        console.log(myInstanceof(Object, Object));    //true
+
+    </script>
+</body>
+
+</html>

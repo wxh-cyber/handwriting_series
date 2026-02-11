@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object.assign</title>
+</head>
+
+<body>
+    <!--
+       Object.assign函数：
+       1.如果目标对象和源对象有同名属性，或者多个源对象有同名属性，则后面的属性会覆盖前面的属性
+       2.如果该函数只有一个参数，当参数为对象时，直接返回该对象；当参数不是对象时，会先将参数转为对象然后返回
+       3.由于null和undefined不能转化为对象，所以第一个参数不能为null或undefined
+    -->
+    <script>
+        let target = { a: 1 };
+        let object1 = { b: 2 };
+        let object2 = { c: 3 };
+        Object.assign(target, object1, object2);
+        console.log(target);    //{a:1,b:4,c:5}
+
+        target.b = 4;
+        target.c = 5;
+        console.log(object1);   //{b:2}
+        console.log(object2);   //{c:3}
+        console.log(target);    //{a:1,b:4,c:5}
+        //该方法实现了一维对象的深拷贝
+
+        let num1 = 1;
+        console.log(Object.assign(num1));   //Number
+        //第一个参数不是对象，会将其转化为对象
+    </script>
+</body>
+
+</html>
