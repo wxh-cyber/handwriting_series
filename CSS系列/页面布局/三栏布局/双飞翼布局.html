@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双飞翼布局</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /*先设置三栏的宽高、浮动以及背景颜色*/
+        .left,
+        .right {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            float: left;
+        }
+
+        .center {
+            height: 200px;
+            background-color: pink;
+            float: left;
+            width: 100%;
+        }
+
+        /*然后给中间栏里的div设置外边距撑开空间*/
+        .inner {
+            margin: 0 200px;
+            height: 200px;
+        }
+
+        /*left左外边覆盖中间栏最左侧*/
+        .left {
+            margin-left: -100%;
+        }
+
+        /*给right左外边距覆盖到最右侧*/
+        .right {
+            margin-right: -200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="center">
+            <div class="inner"></div>
+        </div>
+        <div class="left"></div>
+        <div class="right"></div>
+    </div>
+</body>
+
+</html>

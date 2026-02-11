@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flex水平垂直居中</title>
+    <style>
+        .outer {
+            width: 400px;
+            height: 600px;
+            display: flex;
+            /*垂直居中*/
+            align-items: center;
+            /*水平居中*/
+            justify-content: center;
+            border: 1px solid green;
+            background: pink;
+        }
+
+        .inner {
+            background: red;
+            width: 200px;
+            height: 300px;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+
+</html>

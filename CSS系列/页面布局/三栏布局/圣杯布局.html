@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣杯布局</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /*给外层容器设置内边距，给左右两栏预留位置*/
+        .container {
+            padding: 0 200px;
+            height: 2000px;
+        }
+
+        /*渲染左中右三栏的容器*/
+        /*中间一栏设置宽度为100%，撑满整个容器*/
+        .middle {
+            width: 100%;
+            background-color: pink;
+            height: 200px;
+        }
+
+        .left,
+        .right {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+        }
+
+        /*给盒子里的所有div一个浮动*/
+        .container div {
+            float: left;
+        }
+
+        /*将左右两栏放到上面两个空栏的位置*/
+        .left {
+            position: relative;
+            left: -200px;
+            /*通过左外边距的100%唯一到中间栏的左边*/
+            margin-left: -100%;
+        }
+
+        .right {
+            position: relative;
+            left: 200px;
+            margin-left: -200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left"></div>
+        <div class="middle"></div>
+        <div class="right"></div>
+    </div>
+</body>
+
+</html>
