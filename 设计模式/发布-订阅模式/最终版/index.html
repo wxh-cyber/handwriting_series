@@ -6,7 +6,7 @@
     <title>最终版</title>
 </head>
 <body>
-    <script type="text/javascript" src="./index.js"></script>
+    <script type="module" src="./index.js"></script>
     <script type="module">
         //引入Event模块
         import Event from './index.js';
@@ -21,6 +21,18 @@
         Event.create('user').trigger('login',{name:'Dave'});
 
         console.log(Event);
+        /**
+         * 输出：
+         * {
+         *     create,
+         *     listen,
+         *     trigger,
+         *     remove,
+         *     one,
+         *     find
+         * }
+        */
+       console.log(Event.find());
     </script>
 </body>
 </html>

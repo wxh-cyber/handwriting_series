@@ -28,6 +28,30 @@ var Event=(function(){
                 return ret;     //如果这个事件绑定了多个监听函数，将最终返回最后被绑定的那个监听函数的返回值
             };
 
+            //完善find函数
+            //
+            //
+            //
+            find=function(){
+                var debugState={};
+                for(var ns in namespaceCache){
+                    if(namespaceCache.hasOwnProperty(ns)){
+                        //获取在_create中暴露的内部数据
+                        debugState[ns]=namespaceCache[ns]._debugInfo;
+                    }
+                }
+
+                console.log('===Event全局状态概览===');
+                // console.table 能以表格形式清晰展示（如果环境支持）
+                if(console.table){
+                    console.table(debugState);
+                }else{
+                    console.dir(debugState);
+                }
+
+                return debugState;
+            }
+
             //底层订阅实现
             _listen=function(key,fn,cache){
                 //如果该事件key还没有对应的数组，创建一个空数组
@@ -164,6 +188,18 @@ var Event=(function(){
                             }
                             //如果offlineStack没了（说明已经有人listen了），直接执行
                             return fn();
+                        },
+
+                        //在每个命名空间对象中，暴露内部数据供find查看
+                        //这里将cache和offlineStack挂在到一个特殊属性上
+                        //使用getter或者直接引用类型均可
+                        _debugInfo:{
+                            get events(){
+                                return cache;      //当前订阅的所有事件
+                            },
+                            get offlineStack(){
+                                return offlineStack;      //当前的离线消息栈
+                            }
                         }
                     };
 
@@ -197,7 +233,9 @@ var Event=(function(){
                 trigger:function(){
                     var event=this.create();       //create()获取default命名空间对象
                     event.trigger.apply(event,arguments);     //trigger()触发事件
-                }
+                },
+
+                find
             };
     }();    //内部函数立即执行
 
