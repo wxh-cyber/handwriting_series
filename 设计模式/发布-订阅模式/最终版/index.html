@@ -6,8 +6,21 @@
     <title>最终版</title>
 </head>
 <body>
-    <script type="text/javascript">
-        
+    <script type="text/javascript" src="./index.js"></script>
+    <script type="module">
+        //引入Event模块
+        import Event from './index.js';
+
+        //先在user命名空间中触发login事件
+        Event.create('user').trigger('login',{name:'John'});
+        //然后在user命名空间中订阅login事件
+        Event.create('user').listen('login',function(data){
+            console.log('命名空间user下订阅的login事件被触发，数据为：',data);
+        })
+        //在先前已经订阅后再次触发login事件
+        Event.create('user').trigger('login',{name:'Dave'});
+
+        console.log(Event);
     </script>
 </body>
 </html>

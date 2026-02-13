@@ -21,8 +21,11 @@ var Event=(function(){
                      var n=ary[i];
                      //执行回调，并将this指向当前元素n
                      ret=fn.call(n,i,n);
+                     //在每一次循环中，ret的值都会被重新覆盖
+                     //因此在一般情况下，ret的值是最后一次循环的结果
+                     //如果传入的数组是空数组[]，则ret的值是undefined
                 } 
-                return ret;
+                return ret;     //如果这个事件绑定了多个监听函数，将最终返回最后被绑定的那个监听函数的返回值
             };
 
             //底层订阅实现
@@ -62,7 +65,7 @@ var Event=(function(){
                      //取出第二个参数（现在的第一个）：事件名（key）
                      key=_shift.call(arguments),
                      //剩下的参数：传给回调函数的数据
-                     args=arguments;
+                     args=arguments,
                      _self=this,
                      ret,
                      //从cache中找到对应的监听器数组
@@ -86,6 +89,7 @@ var Event=(function(){
                 var cache={},             //当前命名空间的事件存储箱
                     offlineStack=[],      //离线事件栈（暂存还没被消费的消息）
                     //ret是当前命名空间对外暴露的对象
+                    //返回这个对象，其实本质是为了在获取具体的命名空间的基础上，向Event的namespaceCache[namespace]中添加一些方法
                     ret={
                         //对外暴露的listen
                         listen:function(key,fn,last){
@@ -99,12 +103,23 @@ var Event=(function(){
 
                              //3.处理离线消息
                              if(last==='last'){
-                                //如果指定了'last'，只执行离线栈里的最后一条
+                                //策略一：只读最后一条
+                                //如果指定了'last'，说明前面的消息过期了，只执行离线栈里的最后一条
+                                /*
+                                   1.offlineStack.length起到了安全守卫的作用，首先检查离线事件栈里面有没有东西。
+                                     如果数组是空的[]，length是0。0被视为false。
+                                     如果数组中有东西[fn1,fn2]，length是2。正整数被视为true
+                                     如果数组为空，右边的代码不会执行，直接停止。避免了对空数组操作可能引发的错误。
+                                   2.offlineStack.pop()表示，从数组的末尾移除并返回最后一个元素，在这个场景下，数组里存的元素是封装好的函数（闭包）。假设返回了函数fn。
+                                     则紧随其后的这对括号，表示立即执行刚才返回的那个函数。
+                                */
                                 offlineStack.length&&offlineStack.pop()();
                              }else{
-                                //否则，把离线栈里积压的消息全部执行一遍
+                                //策略二：全部重放（默认）
+                                //依次执行栈里的每一个函数
                                 each(offlineStack,function(){
-                                     this();      //执行封装好的触发函数
+                                     //注意：这里用each遍历，this()就是在执行之前存进去的那个fn
+                                     this();      
                                 });
                              }
 
@@ -116,12 +131,12 @@ var Event=(function(){
 
                         //绑定一次
                         one:function(key,fn,last){
-                            _remove(key,cache);    //先移除旧的
+                            _remove(key,cache);    //先移除旧的，实际上就是cache[key]=[]
                             this.listen(key,fn,last);     //再绑定新的
                         },
 
                         remove:function(key,fn){
-                            _remove(key,cache,fn);
+                            _remove(key,cache,fn);     //移除cache[key]中先前存在的fn
                         },
 
                         //对外暴露的trigger
@@ -136,6 +151,8 @@ var Event=(function(){
                             args=arguments;
 
                             //封装一个执行函数
+                            //为什么要封装？因为我们现在还不知道是该立即执行，还是以后执行
+                            //把“执行_trigger”这个动作，连同当时的参数，一起包进一个闭包函数fn里
                             fn=function(){
                                 return _trigger.apply(_self,args);
                             };
@@ -163,26 +180,29 @@ var Event=(function(){
                 //下面这些都是默认命名空间（default）的简写方法
                 //它们内部都调用了this.create()，即获取default命名空间对象
                 one:function(key,fn,last){
-                    var event=this.create();
-                    event.one(key,fn,last);
+                    var event=this.create();    //create()获取default命名空间对象
+                    event.one(key,fn,last);     //one()绑定一次事件
                 },
 
                 remove:function(key,fn){
-                    var event=this.create();
-                    event.remove(key,fn);
+                    var event=this.create();    //create()获取default命名空间对象
+                    event.remove(key,fn);       //remove()移除事件
                 },
 
                 listen:function(key,fn,last){
-                    var event=this.create();
-                    event.listen(key,fn,last);
+                    var event=this.create();       //create()获取default命名空间对象
+                    event.listen(key,fn,last);     //listen()绑定事件
                 },
 
                 trigger:function(){
-                    var event=this.create();
-                    event.trigger.apply(event,arguments);
+                    var event=this.create();       //create()获取default命名空间对象
+                    event.trigger.apply(event,arguments);     //trigger()触发事件
                 }
             };
     }();    //内部函数立即执行
 
     return Event;    //返回给最外层的var Event
 })();     //外部函数立即执行
+
+//默认向外暴露
+export default Event;
