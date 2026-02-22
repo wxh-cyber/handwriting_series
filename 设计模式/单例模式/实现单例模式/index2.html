@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现单例模式</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var Singleton=function(name){
+            this.name=name;
+        }
+
+        Singleton.prototype.getName=function(){
+            alert(this.name);
+        }
+
+        Singleton.getInstance=(function(){
+            var instance=null;
+            return function(name){
+                if(!instance){
+                    instance=new Singleton(name);
+                }
+                return instance;
+            }
+        })();
+
+        var a=Singleton.getInstance("Jack1");
+        var b=Singleton.getInstance("Jack2");
+        alert(a===b);     //true
+
+        /**
+         * 相较于上一种方式，外部代码完全无法访问 instance 变量。你无法通过 Singleton.instance 或任何其他方式在外部把它置为 null。
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用代理实现单例模式</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var CreateDiv=function(html){
+            this.html=html;
+            this.init();
+        }
+
+        CreateDiv.prototype.init=function(){
+            var div=document.createElement("div");
+            div.innerHTML=this.html;
+            document.body.appendChild(div);
+        }
+
+        var ProxySingleton=(function(){
+            var instance;
+
+            return function(html){
+                if(!instance){
+                    instance=new CreateDiv(html);
+                }
+                return instance;
+            }
+        })();
+
+        var a=new ProxySingleton("sven1");
+        var b=new ProxySingleton("sven2");
+        console.log(a===b);
+
+        /**
+         * 现在我们把负责管理单例的逻辑移到了代理类proxySingletonCreateDiv中。
+         * 这样一来，CreateDiv就变成了一个普通的类，它跟proxySingletonCreateDiv组合起来可以达到单例模式的效果。
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现单例模式</title>
+</head>
+<body>
+    <script type="text/javascript">
+        //创建单例对象的函数
+        var Singleton=function(name){
+            this.name=name;
+            this.instance=null;
+        };
+
+        //获取单例姓名的方法被挂载到原型上
+        Singleton.prototype.getName=function(){
+            alert(this.name);
+        }
+
+        //在构造函数上增加一个静态方法，获取单例对象实例
+        Singleton.getInstance=function(name){
+            if(!this.instance){
+                this.instance=new Singleton(name);
+            }
+            return this.instance;
+        }
+        
+        var a=Singleton.getInstance("Jack1");
+        var b=Singleton.getInstance("Jack2");
+        alert(a===b);     //true
+    </script>
+</body>
+</html>
