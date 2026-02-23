@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通用的惰性单例模式</title>
+</head>
+<body>
+    <button id="loginBtn">登录</button>
+
+    <script type="text/javascript">
+        //定义创建浮窗的函数
+        var createLoginLayer=function(){
+            var div=document.createElement("div");
+            div.innerHTML="我是登录浮窗";
+            div.style.display="none";
+            document.body.appendChild(div);
+            return div;
+        };
+
+        //将管理单例逻辑抽离出来形成一个函数
+        var getSingle=function(fn){
+            var result;
+            return function(){
+                return result || (result=fn.apply(this,arguments));
+            }
+        };
+
+        var createSingleLoginLayer=getSingle(createLoginLayer);
+
+        document.getElementById('loginBtn').onclick=function(){
+            var loginLayer=createSingleLoginLayer();
+            loginLayer.style.display="block";
+        };
+
+         /**
+          * 现在我们把管理单例的逻辑抽离出来形成了一个getSingle函数，这样一来，getSingle函数就变成了一个通用的创建单例的函数。
+          * 只要把需要单例化的函数传入getSingle函数中，就可以得到一个单例化的函数。
+          * 这样一来，我们就可以很方便的创建各种各样的单例了。
+          */
+    </script>
+</body>
+</html>

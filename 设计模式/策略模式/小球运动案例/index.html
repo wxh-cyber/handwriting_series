@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小球运动案例</title>
+</head>
+<body>
+    <div style="position: absolute;background-color: blue;" id="div">我是div</div>
+
+    <script type="text/javascript">
+        //定义小球的运动函数
+        /**
+         * @t 当前时间
+         * @b 初始值
+         * @c 变化量
+         * @d 持续时间
+        */
+        var tween={
+            //小球运动的线性变化函数
+            linear:function(t,b,c,d){
+                return c*t/d+b;
+            },
+
+            //小球运动的二次函数（起步慢，越来越快）
+            easeIn:function(t,b,c,d){
+                return c*(t/=d)*t+b;
+            },
+
+            //小球运动的高次函数（起步慢，越来越快）
+            strongEaseIn:function(t,b,c,d){
+                return c*(t/=d)*t*t*t*t+b;
+            },
+
+            //小球运动的二次函数（起步快，越来越慢）
+            strongEaseOut:function(t,b,c,d){
+                return c*((t=t/d-1)*t*t*t*t+1)+b;
+            },
+
+            //小球运动的正弦函数（起步慢，越来越快，再慢）
+            sineEaseIn:function(t,b,c,d){
+                return -c/2*(Math.cos(Math.PI*t/d)+1)+b;
+            },
+
+            //小球运动的正弦函数（起步快，越来越慢）
+            sineEaseOut:function(t,b,c,d){
+                return c/2*(Math.sin(Math.PI*t/d)+1)+b;
+            },
+        };
+
+        var Animate=function(dom){
+            this.dom=dom;               //进行运动的dom节点
+            this.startTime=0;           //运动开始时间
+            this.startPos=0;            //运动开始时dom节点的位置，即dom的初始位置
+            this.endPos=0;              //运动结束时dom节点的位置，即dom的目标位置
+            this.propertyName="";       //dom节点需要被改变的CSS属性名
+            this.easing=null;           //运动的缓动算法
+            this.duration=null;         //运动持续时间
+        };
+
+        /**
+         * 启动动画的函数：
+         * @propertyName 需要被改变的CSS属性名
+         * @endPos 运动结束时dom节点的位置，即dom的目标位置
+         * @duration 运动持续时间
+         * @easing 运动的缓动算法
+        */
+        Animate.prototype.start=function(propertyName,endPos,duration,easing){
+            this.startTime=+new Date;        //动画启动时间
+            this.startPos=this.dom.getBoundingClientRect()[propertyName];     //dom节点的初始位置
+            this.endPos=endPos;           //dom节点目标位置
+            this.propertyName=propertyName;         //dom节点需要被改变的CSS属性名
+            this.duration=duration;                 //动画持续时间
+            this.easing=tween[easing];              //缓动算法
+
+            var self=this;
+
+            var timeId=setInterval(function(){         //启动定时器，开始执行动画
+                //如果动画已结束，则清除定时器
+                if(self.step()===false){               
+                    clearInterval(timeId);
+                }
+            },19);
+        };
+
+        /**
+         * 小球运动每一帧要做的事情。
+         * 这个方法负责计算小球的当前位置和调用更新CSS属性值的方法Animate.prototype.update。
+         * 
+        */
+        Animate.prototype.step=function(){
+            var t=new Date();        //当前时间点
+            if(t>=this.startTime+this.duration){     //如果当前时间点大于动画结束时间
+                this.update(this.endPos);     //将dom节点的位置设置为目标位置
+                return false;
+            }
+
+            //计算小球当前位置
+            var pos=this.easing(t-this.startTime,this.startPos,this.endPos-this.startPos,this.duration);  
+            this.update(pos);     //将dom节点的位置设置为当前计算出的位置
+        };
+
+        //负责更新小球位置的函数
+        Animate.prototype.update=function(pos){
+            this.dom.style[this.propertyName]=pos+"px";     //更新dom节点的CSS属性值
+        };
+
+        var div=document.getElementById("div");
+        var animate=new Animate(div);
+        animate.start('left',500,2000,'easeIn');
+    </script>
+</body>
+</html>
