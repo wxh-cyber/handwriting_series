@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写LazyMan实现Sleep机制</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // 实现LazyMan类
+        class LazyMan {
+            constructor(name) {
+                this.name = name;
+                this.tasks = [];       //任务队列
+                
+                //初始任务
+                this.tasks.push(()=>{
+                    console.log(`Hi,I am ${name}`);
+                    return Promise.resolve();
+                });
+
+                //使用setTimeout确保所有任务入队后再执行
+                setTimeout(()=>{
+                    this.runTasks();
+                },0);
+            }
+
+            //执行任务队列
+            async runTasks(){
+                for(let task of this.tasks){
+                    await task();
+                }
+            }
+
+            eat(food){
+                this.tasks.push(()=>{
+                    console.log(`I am eating ${food}`);
+                    return Promise.resolve();
+                });
+
+                return this; //支持链式调用
+            }
+
+            sleep(seconds){
+                this.tasks.push(()=>{
+                    console.log(`Sleeping for ${seconds} seconds...`);
+                    return new Promise(resolve=>{
+                        setTimeout(resolve,seconds*1000);
+                    });
+                });
+
+                return this; //支持链式调用
+            }
+        };
+
+        //工厂函数，方便调用
+        function createLazyMan(name){
+            return new LazyMan(name);
+        }
+
+        createLazyMan('Tom').eat('apple').sleep(5).eat('banana').sleep(5).eat('orange');
+    </script>
+</body>
+</html>
