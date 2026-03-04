@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代理模式 - 基本实现</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var Flower=function(){};
+
+        var xiaoming={
+            sendFlower:function(target){
+                var flower=new Flower();
+                target.receiveFlower(flower);
+            }
+        };
+
+        var B={
+            receiveFlower:function(flower){
+                A.listenGoodMood(function(){       //监听A的好心情
+                    A.receiveFlower(flower);
+                });
+            }
+        };
+
+        var A={
+            receiveFlower:function(flower){
+                console.log('收到花',flower);
+            },
+
+            listenGoodMood:function(fn){
+                setTimeout(function(){        //10秒后A的心情变好
+                    fn();
+                },10000);
+            }
+        };
+
+        xiaoming.sendFlower(B);
+    </script>
+</body>
+</html>
