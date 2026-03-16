@@ -10,7 +10,7 @@
             width: 100px;
             height: 200px;
             background: red;
-            float: left;
+            float: left;       /* float:left 让左侧元素脱离了标准的文档流（不再占据原本的空间） */
         }
 
         .right {
@@ -22,6 +22,15 @@
 </head>
 
 <body>
+    <!-- 
+        Q：什么是BFC？
+        A：BFC 是一个独立的渲染区域。根据 CSS 规范，BFC 区域不会与浮动元素重叠。
+
+        加上 overflow: hidden 后发生了什么？
+            • 它触发了 .right 的 BFC。
+            • 浏览器检测到左边有一个浮动元素（.left）。
+            • 为了遵循“BFC 不与浮动重叠”的规则，.right 会自动计算剩余宽度，并把自己“挤”到浮动元素的右边，宽度自适应填满剩余空间。
+    -->
     <div class="left"></div>
     <div class="right"></div>
 </body>

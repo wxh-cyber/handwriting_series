@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片自动换行</title>
+    <style>
+        .cards{
+            display:flex;
+            flex-wrap:wrap;      /*允许换行*/
+            gap:16px;
+        }
+
+        .card{
+            flex:1 1 200px;     /*最小基准200px，可伸缩*/
+            height:120px;
+            background: #e8f3ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        flex-wrap: wrap + flex-basis 做响应式换行
+        屏幕窄时自动掉到下一行
+    -->
+    <section class="cards">
+        <div class="card">1</div>
+        <div class="card">2</div>
+        <div class="card">3</div>
+        <div class="card">4</div>
+        <div class="card">5</div>
+    </section>
+</body>
+</html>

@@ -7,9 +7,15 @@
     <title>flex实现</title>
     <style>
         .outer {
-            display: flex;
+            display: flex;    /* outer变成了flex容器，它的所有直接子元素直接变成Flex项目 */
             height: 100px;
         }
+
+        /*
+          默认行为：
+              ◦ 子元素默认在同一行排列（flex-direction: row）。
+              ◦ 子元素的高度默认由内容决定，但如果父容器有高度，且子元素没设置高度，它们默认会拉伸以适应父容器高度（align-items: stretch）。这就是为什么左右两侧虽然没有写 height，却都能自动填满 100px 的原因。
+        */
 
         .left {
             width: 200px;
@@ -20,6 +26,13 @@
             flex: 1;
             background: gold;
         }
+
+        /*
+              flex: 1 是一个简写属性，它等价于：
+                  • flex-grow: 1：允许放大。如果有剩余空间，该项目将按比例分配剩余空间。因为只有它一个设置了 grow，所以它拿走了所有剩余空间。
+                  • flex-shrink: 1：允许缩小（如果空间不足）。
+                  • flex-basis: 0%：元素的基准大小为 0。
+        */
     </style>
 </head>
 
