@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛玻璃实战效果</title>
+    <style>
+        /* 基础页面样式 */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            ;
+            color: #fff;
+            /* 设置一张精美的背景图 */
+            background-image: url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2560&q=80');
+            background-size: cover;
+            /* 将图片铺满整个容器(图片可能被裁剪) */
+            background-position: center;
+            background-attachment: fixed;
+            /* 背景图相对于视口固定，页面往下滚时，文字在动，但背景像钉在屏幕上一样不动。 */
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            z-index: 1;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            width: 300px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            /* 水平偏移、垂直偏移、模糊半径、背景颜色和透明度 */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            position: relative;
+            /* 为伪元素方案做定位准备 */
+            overflow: hidden;
+            /* 关键：防止模糊边缘溢出圆角 */
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            /* 水平偏移、垂直偏移、模糊半径、颜色 */
+
+        }
+
+        .card p {
+            line-height: 1.6;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 方案一：现代方案（推荐） - backdrop-filter */
+        .glass-modern {
+            /* 1.关键属性：背景模糊 */
+            -webkit-backdrop-filter: blur(12px);
+            /* 保证浏览器兼容性 */
+            backdrop-filter: blur(12px);
+
+            /* 2.半透明背景色：增加可读性 */
+            background-color: rgba(255, 255, 255, 0, 15);
+
+            /* 3.文字颜色继承自body，这里确保是白色 */
+            color: #fff;
+        }
+
+        /* 方案二：高性能/降级方案 - 伪元素+filter */
+        /* 适用于：静态背景或不支持backdrop-filter的环境 */
+        .glass-fallback {
+            background-color: transparent;       /* 容器本身透明 */
+            color: #fff;
+        }
+
+        /* 核心：模糊层逻辑 */
+        .glass-fallback::before {
+            content:'';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;              /* 置于内容下方 */
+
+            /* 1.继承父级的背景图设置 */
+            background-image: inherit;
+            background-size: inherit;
+            background-position: inherit;
+            background-attachment: inherit;
+
+            /* 2.进行模糊处理 */
+            filter:blur(12px);
+
+            /* 3.关键技巧：放大一点，消除模糊边缘的白边 */
+            transform: scale(1.05);
+        }
+
+        .label {
+            position: absolute;
+            top:10px;
+            right: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 
+        在CSS中，backdrop-filter 用来给元素背后的区域加视觉滤镜效果（不是滤元素本身），常见如毛玻璃。
+        常用函数：
+            ·blur()：模糊
+            ·brightness()：亮度
+            ·contrast()：对比度
+            ·saturate()：饱和度
+            ·grayscale()：灰度
+            ·hue-rotate()：色相旋转
+    -->
+    <div class="container">
+        <!-- 卡片1：现代方案 -->
+        <div class="card glass-modern">
+            <span class="label">Best Practice</span>
+            <h2>Modern Class</h2>
+            <p>
+                使用<code>backdrop-filter</code>实现。<br />
+                优点：代码极少，背景实时模糊，支持动态视频背景。<br>
+                缺点：部分旧浏览器不支持，大面积使用需注意性能。
+            </p>
+        </div>
+    </div>
+
+    <!-- 卡片2：降级/高性能方案 -->
+    <div class="card glass-fallback">
+        <span class="label">Fallback</span>
+        <h2>Static Class</h2>
+        <p>
+            使用
+            <code>::before</code> 伪元素配合 <code>filter: blur</code> 实现。<br>
+            优点：兼容性极好，性能高，不依赖 GPU 实时渲染。
+            <br>
+            缺点：代码较复杂，仅适合静态背景。
+        </p>
+    </div>
+</body>
+
+</html>
