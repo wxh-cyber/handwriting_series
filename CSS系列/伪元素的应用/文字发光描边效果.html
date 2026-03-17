@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字发光描边效果</title>
+    <style>
+        .container {
+            width: 500px;
+            height: 300px;
+            background: pink;
+            display:grid;
+            place-items:center;
+        }
+
+        h1 {
+            position:relative;
+            margin:0;
+            color:#fff;
+            -webkit-text-stroke:1px #111;      /* text-stroke用来给文字描边/加轮廓线   线宽+颜色 */
+            text-shadow:0 0 6px rgba(255,255,255,0.9);
+        }
+
+        h1::before{
+            content:attr(data-text);      /* 需要保证h1标签中存在对应的元素依赖 */
+            position:absolute;
+            inset:0;
+            color:transparent;
+            -webkit-text-stroke: 2px #111;    /* 描边层 */
+            z-index:-1;
+        }
+
+        h1::after {
+            content:attr(data-text);
+            position: absolute;
+            inset:0;
+            color:#fff;
+            filter: blur(4px);
+            opacity:0.9;
+            z-index:-1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 data-text="再不学就要饿死了">再不学就要饿死了</h1>
+    </div>
+</body>
+</html>

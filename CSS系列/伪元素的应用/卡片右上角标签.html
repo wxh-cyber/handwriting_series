@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片右上角变迁</title>
+    <style>
+        body {
+            background: skyblue;
+        }
+
+        .card {
+            width: 300px;
+            height:400px;
+            background-color: pink;
+            position: relative;
+            z-index:1;
+        }
+
+        /* 卡片右上角标签 */
+        .card::after {
+            content:'推荐';
+            position: absolute;
+            top:8px;
+            right:-10px;
+            background:orange;
+            color:white;
+            padding:2px 6px;
+            font-size: 12px;
+            transform:rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        
+    </div>
+</body>
+</html>
