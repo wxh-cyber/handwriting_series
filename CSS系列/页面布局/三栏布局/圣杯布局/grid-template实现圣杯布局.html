@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid-template实现圣杯布局</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        .layout {
+            min-height:100vh;
+            /*
+                整体骨架：.layout 是一个 Grid 容器
+                display: grid; 后，所有直接子元素都变成网格项（header/main/left/right/footer）。
+            */
+            display:grid;
+            grid-template:
+                "header header header" 60px
+                "left main right" 1fr
+                "footer footer footer" 50px
+                / 220px 1fr 220px;
+            /*
+                前三行是“每一行的区域分布 + 该行高度”
+                / 后面是三列宽度
+            */
+            gap:12px;
+            padding:12px;
+            background: #f3f4f6;
+        }
+
+        header {
+            /* grid-area名称要和模板里的字符串一致 */
+            grid-area:header;
+            background: #333;
+            color:#fff;
+            display:grid;
+            place-items:center;
+        }
+
+        main {
+            grid-area:main;
+            background: #ffd9e2;
+            padding:16px;
+        }
+
+        .left {
+            grid-area:left;
+            background: #ff4d4f;
+            color:#fff;
+            padding:16px;
+        }
+
+        .right {
+            grid-area:right;
+            background: #ff4d4f;
+            color:#fff;
+            padding:16px;
+        }
+
+        footer {
+            grid-area:footer;
+            background: #333;
+            color:#fff;
+            display:grid;
+            place-items:center;
+        }
+
+        @media (max-width:768px){
+            .layout {
+                grid-template:
+                /* 区域顺序改为纵向：header -> main -> left -> right -> footer */
+                    "header" 60px
+                    "main" auto
+                    "left" auto
+                    "right" auto
+                    "footer" 50px
+                    / 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <header>Header</header>
+        <main>Main Content</main>
+        <aside class="left">Left Sidebar</aside>
+        <aside class="right">Right Sidebar</aside>
+        <footer>Footer</footer>
+    </div>
+</body>
+</html>
