@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid实现圣杯布局</title>
+    <style>
+        * {
+            /* 元素宽度包含内边距和边框 */
+            box-sizing: border-box;
+            margin:0;
+            padding:0;
+        }
+
+        .page {
+            min-height:100vh;
+            display:grid;
+            grid-template-rows: 60px 1fr 50px;       /* 头部/主体/底部 */
+        }
+
+        header,footer {
+            display:grid;
+            /* 
+                place-items是一个简写属性，相当于把align-items和justify-items合并在一起写。
+                    align-items：控制内容在格子里的垂直方向对齐（上、下、居中）。
+                    justify-items：控制内容在格子里的水平方向对齐（左、右、居中）。
+                
+                语法规则：
+                    place-items: <align-items> <justify-items>;
+            */
+            place-items:center;
+            color:#fff;
+            background-color:#333;
+        }
+
+        .main {
+            display:grid;
+            grid-template-columns: 220px 1fr 220px;         /* 左固定/中自适应/右固定 */
+            gap:12px;
+            padding:12px;
+            background:#f5f5f5;
+        }
+
+        .content {
+            background: #ffd6e0;
+            min-height:300px;
+            padding:16px;
+        }
+
+        .left .right {
+            background: #ff4d4f;
+            color:#fff;
+            padding:16px;
+        }
+
+        /* 小屏时改成单列，提升可读性 */
+        @media (max-width: 768px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .left {order:1;}
+            .content {order:2;}
+            .right {order:3;}
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>Header</header>
+
+        <main class="main">
+            <aside class="left">Left Sidebar</aside>
+            <section class="content">Main Content（自适应）</section>  
+            <aside class="right">Right Sidebar</aside>
+        </main>
+
+        <footer>Footer</footer>
+    </div>
+</body>
+</html>
