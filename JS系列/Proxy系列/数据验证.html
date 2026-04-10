@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据验证</title>
+</head>
+<body>
+    <script>
+        const validator=new Proxy({},{
+            set(target,key,value){
+                if(key==='age'&&typeof value!=='number'){
+                    throw new TypeError('年龄必须为数字');
+                }
+
+                target[key]=value;
+                return true;           //set trap必须返回true
+            }
+        });
+
+        validator.age=25;
+        console.log(validator.age);
+    </script>
+</body>
+</html>

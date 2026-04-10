@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>响应式数据</title>
+</head>
+<body>
+    <script>
+        function reactive(obj){
+            return new Proxy(obj,{
+                get(target,key){
+                    console.log(`访问了属性${key}`);
+                    return target[key];
+                },
+                set(target,key,value){
+                    console.log(`修改了属性${key}，新值为${value}`);
+                    target[key]=value;
+                    //此处触发视图更新
+                    return true;           //set trap必须返回true
+                }
+            });
+        }
+
+        const state=reactive({count:0});
+        state.count++;
+        console.log(state.count);          //1
+    </script>
+</body>
+</html>

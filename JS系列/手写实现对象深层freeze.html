@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写实现对象的深层freeze</title>
+</head>
+<body>
+    <!-- 
+        Object.freeze() 使对象不可变，具体效果：
+            1. 不能添加新属性
+            2. 不能删除现有属性
+            3. 不能修改现有属性的值
+            4. 不能修改属性的描述符（writable、enumerable、configurable）
+     -->
+    <script>
+        function deepFreeze(obj){
+            Object.keys(obj).forEach( key => {
+                if(typeof obj[key]==='object'&&obj[key]!==null){
+                    deepFreeze(obj[key]);
+                }
+            });
+
+            return Object.freeze(obj);
+        }
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@
                 throw Error('参数必须是一个函数！');
             }
 
-            const res = [];
+            const res = [];                          //res将作为返回的新数组
             for (let i = 0, len = this.length; i < len; i++) {
                 fn(this[i]) && res.push(this[i]);
             }

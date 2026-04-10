@@ -9,15 +9,15 @@
 
 <body>
     <script>
-        function _flat(arr, depth) {
+        function _flat(arr, depth) {              //传入一个数组和一个深度
             //如果对象不是数组，或深度不符合要求
             if (!Array.isArray(arr) || depth <= 0) {
                 return arr;
             }
             return arr.reduce((prev, cur) => {
-                if (Array.isArray(cur)) {
+                if (Array.isArray(cur)) {         //如果当前的对象是一个数组，那么递归处理
                     return prev.concat(_flat(cur, depth - 1));
-                } else {
+                } else {                          //如果当前的对象不是一个数组，那么直接拼接到结果中
                     return prev.concat(cur);
                 }
             }, []);

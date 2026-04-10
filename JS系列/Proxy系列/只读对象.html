@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>只读对象</title>
+</head>
+<body>
+    <script>
+        const readOnly=new Proxy({x:1},{
+            set() {throw new Error('只读，不可修改！');},
+            deleteProperty() {throw new Error('只读，不可删除！');}
+        });
+    </script>
+</body>
+</html>

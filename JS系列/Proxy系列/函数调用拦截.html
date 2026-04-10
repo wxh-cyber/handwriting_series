@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数调用拦截</title>
+</head>
+<body>
+    <script>
+        function sum(a,b){
+            return a+b;
+        }
+
+        const proxied=new Proxy(sum,{
+            apply(target,thisArg,args){
+                console.log(`调用了函数，参数为${args}`);
+                return target.apply(thisArg,args);
+            }
+        });
+
+        proxied(2,3);          //调用了函数，参数为2,3
+    </script>
+</body>
+</html>

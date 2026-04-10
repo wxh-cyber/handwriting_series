@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐藏私有属性</title>
+</head>
+<body>
+    <script>
+        const secret=new Proxy({_private:'hidden',name:'Alice'},{
+            get(target,key){
+                if(key.startsWith('_')) return undefined;
+                return target[key];
+            },
+            has(target,key){
+                return key.startsWith('_')?false:key in target;
+            }
+        });
+
+        console.log(secret.name);             //"Alice"
+        console.log(secret._private);         //undefined
+        console.log('_private' in secret);    //false
+    </script>
+</body>
+</html>

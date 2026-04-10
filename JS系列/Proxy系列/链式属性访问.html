@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链式属性访问</title>
+</head>
+<body>
+    <script>
+        const safe=new Proxy({},{
+            get(target,key){
+                return key in target?target[key]:new Proxy({},this);
+            }
+        });
+
+        //不会抛出错误，返回空Proxy
+        console.log(safe.a.b.c.d);        //Proxy {}
+    </script>
+</body>
+</html>
