@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写AbortController</title>
+</head>
+<body>
+    <script>
+        class SimpleAbortSignal {
+            constructor(){
+                this.aborted = false;
+                this.reason=undefined;
+                /**
+                 * 为什么用set？
+                 * 因为只需要存监听函数、避免重复添加以及支持删除，所以set很合适。
+                */
+                this._listeners = new Set();
+            }
+
+            addEventListener(type,listener){
+                if(type!=='abort'||typeof listener!=='function'){
+                    return;
+                }
+                this._listeners.add(listener);
+            }
+
+            removeEventListener(type,listener){
+                if(type!=='abort') return;
+                this._listeners.delete(listener);
+            }
+
+            _dispatchAbort(){
+                for(const listener of this._listeners){
+                    try{
+                        listener.call(this,{type:'abort',target:this});
+                    }catch(err){
+                        setTimeout(()=>{
+                            throw err;
+                        },0);
+                    }
+                }
+            }
+
+            throwIfAborted(){
+                if(this.aborted){
+                    throw this.reason;
+                }
+            }
+        }
+
+        class SimpleAbortController {
+            constructor(){
+                this.signal=new SimpleAbortSignal();
+            }
+
+            abort(reason=new Error('Aborted')){
+                if(this.signal.aborted) return;
+
+                this.signal.aborted=true;
+                this.signal.reason=reason;
+                this.signal._dispatchAbort();
+            }
+        }
+
+        //定义一个支持取消的sleep
+        function sleep(ms,signal){
+            return new Promise((resolve,reject)=>{
+                if(signal?.aborted){
+                    reject(signal.reason);
+                    return;
+                }
+
+                const timer=setTimeout(()=>{
+                    signal?.removeEventListener('abort',onAbort);
+                    resolve('done');
+                },ms);
+
+                function onAbort(){
+                    clearTimeout(timer);
+                    reject(signal.reason);
+                }
+
+                signal?.addEventListener('abort',onAbort);
+            });
+        }
+
+        const controller=new SimpleAbortController();
+
+        sleep(3000,controller.signal)
+            .then(console.log)
+            .catch((err)=>{
+                console.log('任务被取消',err.message);
+            });
+
+        setTimeout(()=>{
+            controller.abort(new Error('timeout'));
+        },1000);
+
+        /**
+         * 关键：AbortController不会自动停掉setTimeout。
+         *      sleep自己监听abort，然后clearTimeout。
+         * 这就是“协作式取消”。
+        */
+    </script>
+</body>
+</html>
