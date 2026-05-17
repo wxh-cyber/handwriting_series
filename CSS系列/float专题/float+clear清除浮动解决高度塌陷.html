@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>float + clear清除浮动解决高度塌陷</title>
+    <style>
+      .box-without-clearfix {
+        border:2px solid red;
+        margin-bottom:20px;
+      }
+
+      .box-with-clearfix {
+        border:2px solid green;
+      }
+
+      /* 核心代码：清除经典的浮动hack */
+      .box-with-clearfix::after {
+        content:" ";
+        display:block;
+        clear:both;
+      }
+
+      .float-item {
+        float: left;
+        width:100px;
+        height:100px;
+        background:lightblue;
+        margin:10px;
+      }
+    </style>
+</head>
+<body>
+    <!-- 
+        float + clear 清除浮动解决高度塌陷
+            当元素浮动后，它的父容器如果没设定高度，就会感知不到子元素的存在，导致高度塌陷。
+            clear 属性就是用来解决这个问题，阻止元素环绕浮动元素。
+            配合方式：在浮动元素后面的兄弟元素上使用 clear: both;，或者使用伪元素给父元素清除浮动。
+     -->
+    <div id="root">
+        <!-- 塌陷的容器 -->
+        <div class="box-without-clearfix">
+            <div class="float-item">浮动子元素</div>
+            <div class="float-item">浮动子元素</div>
+        </div>
+        <p>↑ 红色边框塌陷了，边框变成了一条线，因为父元素感知不到浮动的子元素。</p>
+
+        <!-- 正常的容器 -->
+        <div class="box-with-clearfix">
+            <div class="float-item">浮动子元素</div>
+            <div class="float-item">浮动子元素</div>
+        </div>
+        <p>↑ 绿色边框正常包裹了子元素，因为使用了 clearfix 清除浮动。</p>
+    </div>
+</body>
+</html>

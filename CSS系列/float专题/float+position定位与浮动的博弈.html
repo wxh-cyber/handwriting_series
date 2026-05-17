@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>float + position定位与浮动的博弈</title>
+    <style>
+      .container {
+        border:1px dashed #ccc;
+        padding:20px;
+        margin-bottom:20px;
+        overflow:hidden;
+      }
+
+      .box {
+        width:80px;
+        height:80px;
+        background:lightblue;
+        margin-right:10px;
+      }
+
+      /* 配合1：relative微调 */
+      .float-rel {
+        float:left;
+        position:relative;
+        /* 向下微调10px */
+        top:10px;
+        /* 向右微调10px */
+        left:10px;
+        background: lightgreen;
+      }
+
+      /* 配合2：absolute让浮动失效 */
+      .float-abs {
+        /* 浮动无效 */
+        float:left;
+        position:absolute;
+        top:0;
+        right:0;
+        background: lightcoral;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box float-rel">相对定位微调</div>
+        <div class="box">普通浮动</div>
+        <p>↑ 绿色方块浮动了，并用 relative 微调了位置，不影响其他元素的位置（原本的位置空间还在）。</p>
+    </div>
+
+    <div class="container" style="position:absolute;height:100px;">
+        <div class="box float-abs">绝对定位</div>
+        <div class="box">普通浮动</div>
+        <p>↑ 红色方块虽然写了 float:left，但由于设置了 absolute，它直接飞到了右上角，float 彻底失效。</p>
+    </div>
+</body>
+</html>

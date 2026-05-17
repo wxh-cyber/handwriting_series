@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>float + display 隐式转换为块级元素</title>
+    <style>
+      .nav a {
+        float:left;             /* 加上浮动 */
+        /* 注意：这里完全没有写display:block; */
+        width:120px;
+        height:40px;
+        background:#333;
+        color:white;
+        text-align:center;
+        line-height:40px;
+        text-decoration: none;
+        margin-right:5px;
+      }
+
+      .nav a:hover {
+        background: #999;
+      }
+    </style>
+</head>
+<body>
+    <!-- 
+        float + display隐式的类型转换
+            float 会强制改变元素的显示类型，这是很多新手踩坑的地方。
+            规则：一旦给元素设置了 float，元素的 display 计算值会自动变成 block。
+            影响：
+                - 行内元素可以设置宽高了：<span>、<a> 等默认不能设置宽高，但加了 float 后，它们就像块级元素一样可以设置 width 和 height 了。
+                - 不需要额外写 display: block：比如横向导航栏，只需 li { float: left; }，不需要再写 display: block;。
+            注意：float 无法将元素变成 flex 或 grid，它只能将元素转为 block。
+    -->
+    <div id="root">
+        <div class="nav">
+            <a href="#">首页</a>
+            <a href="#">产品</a>
+            <a href="#">关于我们</a>
+        </div>
+    </div>
+</body>
+</html>

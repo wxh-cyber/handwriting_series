@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>float + BFC完美包裹浮动元素</title>
+    <style>
+        .parent {
+            border:2px solid orange;
+            margin-bottom:20px;
+        }
+
+        .bfc-overflow {
+            /* 触发BFC，包裹浮动 */
+            overflow:hidden;         
+        }
+
+        .bfc-flow-root {
+            /* 现代触发BFC方法，最推荐 */
+            display:flow-root;
+        }
+
+        .float-child {
+            float:left;
+            width:100px;
+            height:100px;
+            background: lightcoral;
+        }
+
+        /* 演示overflow:hidden; 的副作用 */
+        .tail-element {
+            height:150px;
+            background: lightgreen;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        float + BFC（块级格式化上下文）
+        BFC 是网页布局中的一个独立隔离区域，内部元素不会影响外部。触发 BFC 是解决浮动高度塌陷和环绕问题的现代方法。
+        配合方式：给包含浮动元素的父容器触发 BFC，父容器就会自动包含浮动的子元素。 
+        触发 BFC 的常见样式：
+            - overflow: hidden; 或 overflow: auto;（最常用，但 hidden 可能会裁切绝对定位溢出的元素）
+            - display: flow-root;（最完美的配合方案，专为 BFC 设计，无副作用，现代浏览器支持良好）
+            - display: flex; 或 display: grid;（也会触发 BFC）
+    -->
+    <div class="parent bfc-overflow">
+        <div class="float-child">浮动元素</div>
+        <div class="tail-element">
+            我很高，如果父级有overflow:hidden，超出部分可能被裁切(在此例中由于BFC规则没有被裁切，但在绝对定位溢出时经常被裁切)
+        </div>
+    </div>
+
+    <div class="parent bfc-flow-root">
+        <div class="float-child">浮动元素</div>
+    </div>
+    <p>↑ 使用 display: flow-root 是最安全的做法，它唯一的用途就是创建 BFC 包裹浮动，没有任何副作用。</p>
+</body>
+</html>
