@@ -3,6 +3,8 @@
 ![React](https://img.shields.io/badge/REACT-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Vue](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=black)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F2D51B?style=for-the-badge&logo=javascript&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=black)
+![逐火十三英桀](./assets/逐火十三英桀.jpeg)
 
 该系列主要用于记录一些手写面试题。
 
@@ -88,5 +90,5 @@
 
 ### 参考
 
-[《JavaScript 设计模式》](https://zh.z-library.sk/book/D2RA8ZJ2OL/javascript-设计模式与开发实践.html)
-[ JavaGuide AI部分](https://javaguide.cn/ai/)
+- [《JavaScript 设计模式》](https://zh.z-library.sk/book/D2RA8ZJ2OL/javascript-设计模式与开发实践.html)
+- [ JavaGuide AI部分](https://javaguide.cn/ai/)
