@@ -20,6 +20,8 @@
 
 [Vue 系列](./Vue系列/)：记录一些 Vue 中相关的写法。
 
+[AI 系列](./AI系列/)：结合AI大模型的调用，实现一些场景。
+
 ### 目录
 
 - [CSS 系列](./CSS系列/)
@@ -57,6 +59,8 @@
   - [函数柯里化实现](./JS系列/函数柯里化实现.html)
   - [手写AbortController](./JS系列/手写AbortController.html)
 - [场景系列](./场景应用/)
+  - [手写LazyMan实现Sleep机制](./场景应用/手写LazyMan实现Sleep机制/)
+  - [循环打印红黄绿](./场景应用/循环打印红黄绿/)
 - [设计模式](./设计模式/)
   - [单例模式](./设计模式/单例模式/)
   - [策略模式](./设计模式/策略模式/)
@@ -76,7 +80,13 @@
     - [图片的动态渲染](./React系列/高阶组件/图片的动态渲染/)
 - [Vue 系列](./Vue系列/)
   - [v-model 的封装](./Vue系列/v-model的封装/)
+- [AI 系列](./AI系列/)
+
+### 说明
+
+对于Vue和React的系列，已经内置了对应的test框架，可以将案例复制到src下，再运行，即可查看对应结果。
 
 ### 参考
 
 [《JavaScript 设计模式》](https://zh.z-library.sk/book/D2RA8ZJ2OL/javascript-设计模式与开发实践.html)
+[ JavaGuide AI部分](https://javaguide.cn/ai/)
