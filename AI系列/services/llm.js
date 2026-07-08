@@ -63,6 +63,14 @@ function extractToken(payload) {
   return typeof delta?.content === 'string' ? delta.content : '';
 }
 
+/**
+ * @function streamChatCompletion
+ * @description 流式调用上游模型
+ * @param {string} message - 用户输入的消息
+ * @param {*} signal - 中断信号
+ * @param {Function} onToken - 回调函数，用于处理token
+ * @returns {Promise<void>}
+ */
 async function streamChatCompletion({ message, signal, onToken }) {
   //在当前获取到的base_url后面拼接上/chat/completions
   const response = await fetch(`${normalizeBaseUrl(process.env.BASE_URL)}/chat/completions`, {
@@ -110,10 +118,12 @@ async function streamChatCompletion({ message, signal, onToken }) {
     signal,
   });
 
+  //如果响应状态码不是200，则抛出异常
   if (!response.ok) {
     let details = '';
 
     try {
+      //获取到异常相关信息
       details = await response.text();
     } catch (error) {
       details = '';
@@ -122,6 +132,7 @@ async function streamChatCompletion({ message, signal, onToken }) {
     throw new Error(`上游模型接口调用失败：${response.status}${details ? ` ${details}` : ''}`);
   }
 
+  //如果没有返回可读取的流，则抛出异常
   if (!response.body) {
     throw new Error('上游模型没有返回可读取的流');
   }
@@ -130,36 +141,73 @@ async function streamChatCompletion({ message, signal, onToken }) {
   let buffer = '';
 
   for await (const chunk of response.body) {
+    //通过设置decode的stream参数为true，就可以实现逐帧读取数据
     buffer += decoder.decode(chunk, { stream: true });
-    const frames = buffer.split('\n\n');
+    const frames = buffer.split('\n\n');                          //按SSE格式分割成一个个帧
     buffer = frames.pop() ?? '';
 
+    /**
+     * @note 这里为什么要遍历frames？
+     * 答：因为上游返回的是一个SSE响应，而不是一个完整的JSON对象。
+     * 
+     * @note buffer的数据结构 - 带有\n\n的字符串
+     * data: {"choices":[{"delta":{"content":"你"}}]}
+     *
+     * data: {"choices":[{"delta":{"content":"好"}}]}
+     *
+     * data: [DONE]
+     * 
+     * @note frames的数据结构 - 本质是一个字符串数组
+     * [
+     *   'data: {"choices":[{"delta":{"content":"你"}}]}',
+     *   'data: {"choices":[{"delta":{"content":"好"}}]}',
+     *   'data: [DONE]',
+     *   ''
+     * ]
+     * 
+     * @note frame - 一个完整的帧
+     * 'data: {"choices":[{"delta":{"content":"你"}}]}'
+     */
     for (const frame of frames) {
       const lines = frame
-        .split('\n')
+        .split('\n')                                              //去除单个字符串的换行符以及多余空格
         .map((line) => line.trim())
-        .filter((line) => line.startsWith('data:'));
+        .filter((line) => line.startsWith('data:'));              //确保是data开头的
 
       for (const line of lines) {
-        const data = line.slice(5).trim();
+        const data = line.slice(5).trim();                        //去除data:前缀，得到真正的数据内容
 
-        if (!data) {
+        if (!data) {                                              //如果数据为空，则跳过
           continue;
         }
 
-        if (data === '[DONE]') {
+        if (data === '[DONE]') {                                  //如果是[DONE]，则表示流式响应结束
           return;
         }
 
         let payload;
         try {
+          //解析JSON数据
+          /**
+           * @note payload 数据结构
+           * {
+           *   choices: [
+           *     {
+           *       delta: {
+           *         content: "你"
+           *       }
+           *     }
+           *   ]
+           * }
+           */
           payload = JSON.parse(data);
         } catch (error) {
           continue;
         }
 
-        const token = extractToken(payload);
+        const token = extractToken(payload);                             //从payload中提取token
         if (token) {
+          //如果token不为空，则调用onToken回调函数
           onToken(token);
         }
       }
@@ -171,6 +219,10 @@ async function streamChatCompletion({ message, signal, onToken }) {
   }
 }
 
+/**
+ * @exports
+ * @note 导出函数，供其他模块调用
+ */
 module.exports = {
   getConfigError,
   streamChatCompletion,
