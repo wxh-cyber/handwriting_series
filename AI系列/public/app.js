@@ -159,7 +159,9 @@ function renderSessionList() {
     item.appendChild(content);
     item.addEventListener('click', () => {
       if (!state.isStreaming) {
-        selectSession(session.id);
+        selectSession(session.id).catch((error) => {
+          updateStatus(error.message || '加载会话失败');
+        });
       }
     });
 
@@ -278,7 +280,9 @@ async function createNewSession() {
     method: 'POST',
   });
 
+  await selectSession(payload.session.id);
   await loadSessions(payload.session.id);
+  setPendingState(false);
   promptInput.focus();
 }
 
