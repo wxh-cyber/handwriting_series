@@ -3,6 +3,7 @@ const express = require('express');
 
 const { loadEnvFile } = require('./utils/load-env');
 const chatRouter = require('./routes/chat');
+const sessionsRouter = require('./routes/sessions');
 
 loadEnvFile();
 
@@ -11,6 +12,7 @@ function createServer() {
 
   app.use(express.json());
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use('/api/sessions', sessionsRouter);
   app.use('/chat', chatRouter);
 
   app.use((error, req, res, next) => {

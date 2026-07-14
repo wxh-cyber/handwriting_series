@@ -71,7 +71,16 @@ function extractToken(payload) {
  * @param {Function} onToken - 回调函数，用于处理token
  * @returns {Promise<void>}
  */
-async function streamChatCompletion({ message, signal, onToken }) {
+async function streamChatCompletion({ message, messages, signal, onToken }) {
+  const conversation = Array.isArray(messages) && messages.length
+    ? messages
+    : [
+        {
+          role: 'user',
+          content: message,
+        },
+      ];
+
   //在当前获取到的base_url后面拼接上/chat/completions
   const response = await fetch(`${normalizeBaseUrl(process.env.BASE_URL)}/chat/completions`, {
     method: 'POST',
@@ -86,12 +95,7 @@ async function streamChatCompletion({ message, signal, onToken }) {
     body: JSON.stringify({
       model: process.env.MODEL,                        //从环境变量中获取model
       stream: true,                                    //采用流式输出
-      messages: [
-        {
-          role: 'user',
-          content: message,                            //填充prompt
-        },
-      ],
+      messages: conversation,
     }),
 
     /**
